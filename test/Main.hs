@@ -1,7 +1,7 @@
 module Main (main) where
 
 import KMeans.Algorithm (kMeansStatic)
-import KMeans.Cluster (displayClusters, Cluster(..))
+import KMeans.Cluster (Cluster(..))
 
 import KMeans.OptimizeK.ElbowMethod
 
@@ -17,7 +17,7 @@ coordinates =
     , (64.51, 78.7)
     , (44.34, 84.58)
     , (19.4, 1.53)
-    {-, (0.37, 16.02)
+    , (0.37, 16.02)
     , (24.1, 75.05)
     , (71.67, 83.63)
     , (65.16, 71.9)
@@ -33,13 +33,13 @@ coordinates =
     , (46.44, 67.09)
     , (37.75, 79.53)
     , (25.41, 97.41)
-    , (35.45, 72.9)-}
+    , (35.45, 72.9)
     , (21.17, 16.91) 
     ]
 
 
 main :: IO ()
 main =
- do putStrLn $ displayClusters $ kMeansStatic 6 3 coordinates
+ do print $ kMeansStatic 6 3 coordinates
     print $ elbowMethod coordinates
     print $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]])

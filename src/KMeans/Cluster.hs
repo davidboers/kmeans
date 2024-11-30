@@ -1,7 +1,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
-module KMeans.Cluster (Cluster(..), sortCluster, getCluster, displayClusters, toList, fmap, elem) where
+module KMeans.Cluster (Cluster(..), sortCluster, getCluster, toList, elem) where
 
 import KMeans.Point
 
@@ -33,11 +33,23 @@ instance Foldable Cluster where
     -- | @'toList' c@ Returns the list of points in cluster @c@.
     --
     -- > toList (Cluster ps) == ps
-    --toList :: Cluster a -> [a]
     toList (Cluster ps) = ps
 
 instance Traversable Cluster where
     traverse f (Cluster ps) = Cluster <$> traverse f ps
+
+instance (Show a) => Show (Cluster a) where
+    show cluster = unlines $ map show (toList cluster)
+
+    -- | Creates a multiline string, displaying the clustered points. Each cluster is 
+    -- assigned a letter, A through Z.
+    showList clusters = (++) (unlines $ mapIndex showListCluster clusters) 
+
+showListCluster :: Show a => Int -> Cluster a -> String
+showListCluster i =
+    showString ("Cluster " ++ [c] ++ ":\n") . show
+  where
+    c = chr (ord 'A' + i)
 
 
 -- Utils
@@ -60,24 +72,6 @@ getCluster :: Point a => [Cluster a] -> a -> Cluster a
 getCluster clusters point =
     head $ filter (\(Cluster c) -> point `elem` c) clusters
 
-
--- Display
-
--- | @'displayClusters' cs@ creates a multiline string, displaying the clustered
--- points. Each cluster is assigned a letter, A through Z, with smaller clusters being
--- assigned first.
-displayClusters :: Point a => Show a => [Cluster a] -> String
-displayClusters clusters =
-    unlines [ displayCluster (chr (ord 'A' + i)) (clusters !! i)
-            | i <- [0..length clusters - 1]
-            ]
-
-displayCluster :: Point a => Show a => Char -> Cluster a -> String
-displayCluster letter c =
-    unlines $
-      ("Cluster " ++ [letter] ++ ":")
-      : map displayPoint (toList c)
-
-displayPoint :: Point a => Show a => a -> String
-displayPoint p =
-    "    " ++ show p
+mapIndex :: (Int -> a -> b) -> [a] -> [b]
+mapIndex f xs =
+    zipWith f [0 .. length xs - 1] xs
