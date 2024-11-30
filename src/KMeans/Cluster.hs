@@ -5,6 +5,8 @@ module KMeans.Cluster (Cluster(..), sortCluster, getCluster, displayClusters, to
 
 import KMeans.Point
 
+import Data.Foldable (Foldable(toList))
+
 import Data.List
 import Data.Char
 
@@ -28,14 +30,14 @@ instance Functor Cluster where
 instance Foldable Cluster where
     foldMap f (Cluster ps) = foldMap f ps
 
+    -- | @'toList' c@ Returns the list of points in cluster @c@.
+    --
+    -- > toList (Cluster ps) == ps
+    --toList :: Cluster a -> [a]
+    toList (Cluster ps) = ps
+
 instance Traversable Cluster where
     traverse f (Cluster ps) = Cluster <$> traverse f ps
-
--- | @'toList' c@ Returns the list of points in cluster @c@.
---
--- > toList (Cluster ps) == ps
-toList :: Cluster a -> [a]
-toList (Cluster ps) = ps
 
 
 -- Utils
