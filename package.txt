@@ -1,0 +1,6 @@
+
+Project documentation:
+-  cabal haddock-project --out=docs
+
+Run tests:
+-  cabal run kmeans-clustering-test
