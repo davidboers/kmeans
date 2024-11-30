@@ -20,6 +20,8 @@ library
                       KMeans.Centroid
                       KMeans.Cluster
                       KMeans.Point
+                      KMeans.OptimizeK.ElbowMethod
+                      KMeans.OptimizeK.Silhouette
 
     -- other-modules: 
 

@@ -13,7 +13,7 @@ silhouetteCoefficient points =
 
 sTidle :: Point a => [a] -> Int -> Double
 sTidle points k =
-    let clusters = kMeans k points in
+    let clusters = kMeansStatic 100 k points in
     avgD $ map (silhouetteScore clusters) points
 
 silhouetteScore :: Point a => [Cluster a] -> a -> Double

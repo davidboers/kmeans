@@ -13,7 +13,7 @@ elbowMethod points =
 inertia :: Point a => [a] -> Int -> (Int, Int)
 inertia points k =
     ( k
-    , sum $ concatMap sqedDistances $ kMeans k points
+    , sum $ concatMap sqedDistances $ kMeansStatic 100 k points
     )
 
 sqedDistances :: Point a => Cluster a -> [Int]
