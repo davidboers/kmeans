@@ -24,14 +24,14 @@ silhouetteScore clusters i =
     (b - a) / max a b
 
 meanIntraClusterDistance :: Point a => Cluster a -> a -> Double
-meanIntraClusterDistance (Cluster cluster) i =
-    (1 / fromIntegral (length cluster - 1)) * sum [ distance i j | j <- cluster, i /= j ]
+meanIntraClusterDistance c i =
+    (1 / fromIntegral (length c - 1)) * sum [ distance i j | j <- toList c, i /= j ]
 
 meanNearestClusterDistance :: Point a => [Cluster a] -> a -> Double
 meanNearestClusterDistance clusters i =
     minimum $
-        map (\(Cluster clusterJ) -> avgD $ map (distance i) clusterJ) $
-        filter (\(Cluster cluster) -> i `notElem` cluster) clusters
+        map (avgD . toList . fmap (distance i)) $
+        filter (\cluster -> not $ i `KMeans.Cluster.elem` cluster) clusters
 
 avgD :: [Double] -> Double
 avgD l =

@@ -1,4 +1,7 @@
-module KMeans.Cluster (Cluster(..), clusterLength, sortCluster, getCluster, displayClusters) where
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+module KMeans.Cluster (Cluster(..), sortCluster, getCluster, displayClusters, toList, fmap, elem) where
 
 import KMeans.Point
 
@@ -7,22 +10,35 @@ import Data.Char
 
 -- | Wrapper type for a list of any type constrained by 'Point'. Variables of this 
 -- wrapper type are produced by the clustering algorithm.
-newtype (Point a) => Cluster a = Cluster [a]
+-- 
+-- Although the type wrapper is not constrained by 'Point', it is not recommended that
+-- a non-'Point' type be put in a @Cluster@. In general, functions in this library 
+-- impose the constraint when a @Cluster@ is passed to, or returned from, a function.
+-- 
+-- Instances of 'Functor', 'Foldable', and 'Traversable' exist, allowing for @Cluster@
+-- variables to be handled in a similar way to lists:
+--
+-- >>> concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]])
+-- [1,3,5,2,6,4,1,3,7,4,2,6]
+newtype Cluster a = Cluster [a]
+
+instance Functor Cluster where
+    fmap f (Cluster ps) = Cluster $ fmap f ps
+
+instance Foldable Cluster where
+    foldMap f (Cluster ps) = foldMap f ps
+
+instance Traversable Cluster where
+    traverse f (Cluster ps) = Cluster <$> traverse f ps
+
+-- | @'toList' c@ Returns the list of points in cluster @c@.
+--
+-- > toList (Cluster ps) == ps
+toList :: Cluster a -> [a]
+toList (Cluster ps) = ps
 
 
 -- Utils
-
--- | @'clusterLength' x@ returns the number of points in the cluster @x@.
---
--- > clusterLength (Cluster points) == Prelude.length points
---
--- ==== __Examples__
---
--- >>> let points = [(1, 5), (3, 2), (6, 4), (9, 2)]
--- >>> clusterLength (Cluster points)
--- 4
-clusterLength :: Point a => Cluster a -> Int
-clusterLength (Cluster points) = Prelude.length points
 
 -- | @'sortCluster' x@ sorts the points in cluster @x@. Type @a@ must be constrained 
 -- by 'Ord'. A new 'Cluster' of the sorted 'Point's is returned.
@@ -55,10 +71,10 @@ displayClusters clusters =
             ]
 
 displayCluster :: Point a => Show a => Char -> Cluster a -> String
-displayCluster letter (Cluster c) =
+displayCluster letter c =
     unlines $
       ("Cluster " ++ [letter] ++ ":")
-      : map displayPoint c
+      : map displayPoint (toList c)
 
 displayPoint :: Point a => Show a => a -> String
 displayPoint p =

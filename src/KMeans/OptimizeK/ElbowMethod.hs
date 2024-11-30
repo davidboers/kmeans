@@ -24,8 +24,8 @@ inertia points k =
     sum $ concatMap sqedDistances $ kMeansStatic 100 k points
 
 sqedDistances :: Point a => Cluster a -> [Int]
-sqedDistances (Cluster points) =
-    let centroid = newCentroid (Cluster points) in
-    map (sq . (`distance2Centroid` centroid)) points
+sqedDistances c =
+    let centroid = newCentroid c in
+    toList $ fmap (sq . (`distance2Centroid` centroid)) c
   where
     sq a = round $ a ^ (2 :: Integer)

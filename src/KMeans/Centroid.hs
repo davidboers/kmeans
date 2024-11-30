@@ -19,7 +19,7 @@ distance2Centroid a (Centroid b) =
 
 -- | @'newCentroid' c@ returns the centroid of 'Cluster' @c@
 --
--- > newCentroid (Cluster points) = Centroid $ center points
+-- > newCentroid c = Centroid $ center $ toList c
 newCentroid :: Point a => Cluster a -> Centroid a
-newCentroid (Cluster points) =
-    Centroid $ center points
+newCentroid c =
+    Centroid $ center $ toList c
