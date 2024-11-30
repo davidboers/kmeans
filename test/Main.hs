@@ -3,6 +3,8 @@ module Main (main) where
 import KMeans.Algorithm (kMeansStatic)
 import KMeans.Cluster (displayClusters)
 
+import KMeans.OptimizeK.ElbowMethod
+
 
 -- Coords
 
@@ -38,4 +40,5 @@ coordinates =
 
 main :: IO ()
 main =
-    putStrLn $ displayClusters $ kMeansStatic 6 3 coordinates
+ do putStrLn $ displayClusters $ kMeansStatic 6 3 coordinates
+    print $ elbowMethod coordinates

@@ -8,7 +8,7 @@ import KMeans.Algorithm
 {- Returns a map, where [(k, wcss)], for subjective inspection -}
 elbowMethod :: Point a => [a] -> [(Int, Int)]
 elbowMethod points =
-  map (inertia points) [1..length points]
+    map (inertia points) [1..length points]
 
 inertia :: Point a => [a] -> Int -> (Int, Int)
 inertia points k =
@@ -19,6 +19,6 @@ inertia points k =
 sqedDistances :: Point a => Cluster a -> [Int]
 sqedDistances (Cluster points) =
     let centroid = newCentroid (Cluster points) in
-    map (round . sq . (`distance2Centeroid` centroid)) points
+    map (sq . (`distance2Centeroid` centroid)) points
   where
-    sq a = a ^ (2 :: Integer)
+    sq a = round $ a ^ (2 :: Integer)
