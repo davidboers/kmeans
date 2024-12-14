@@ -1,7 +1,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
-module KMeans.Cluster (Cluster(..), sortCluster, getCluster, toList, elem) where
+module KMeans.Cluster (Cluster(..), sortCluster, sortClusterByDistance, getCluster, toList, elem) where
 
 import KMeans.Point
 
@@ -38,14 +38,14 @@ instance Foldable Cluster where
 instance Traversable Cluster where
     traverse f (Cluster ps) = Cluster <$> traverse f ps
 
-instance (Show a) => Show (Cluster a) where
+instance (Point a, Show a) => Show (Cluster a) where
     show cluster = unlines $ map show (toList cluster)
 
     -- | Creates a multiline string, displaying the clustered points. Each cluster is 
     -- assigned a letter, A through Z.
-    showList clusters = (++) (unlines $ mapIndex showListCluster clusters) 
+    showList clusters = (++) (unlines $ mapIndex showListCluster $ map sortClusterByDistance clusters) 
 
-showListCluster :: Show a => Int -> Cluster a -> String
+showListCluster :: (Point a, Show a) => Int -> Cluster a -> String
 showListCluster i =
     showString ("Cluster " ++ [c] ++ ":\n") . show
   where
@@ -54,13 +54,24 @@ showListCluster i =
 
 -- Utils
 
--- | @'sortCluster' x@ sorts the points in cluster @x@. Type @a@ must be constrained 
--- by 'Ord'. A new 'Cluster' of the sorted 'Point's is returned.
+-- | @'sortCluster' x@ sorts the points in cluster @x@. @a@ must be an instance of 'Ord'. 
+-- A new 'Cluster' of the sorted 'Point's is returned.
 --
 -- > sortCluster (Cluster points) == Cluster (sort points)
 sortCluster :: Point a => Ord a => Cluster a -> Cluster a
 sortCluster (Cluster points) =
     Cluster $ sort points
+
+-- | @'sortClusterByDistance' c@ sorts the points in cluster @x@ according to how close
+-- each point is to the centroid. Points closer to the centroid (more typical of the
+-- cluster) appear first in the sorted cluster.
+--
+-- > sortClusterByDistance (Cluster points) = Cluster (sortOn (`distance2Centroid` centroid)) points
+sortClusterByDistance :: Point a => Cluster a -> Cluster a
+sortClusterByDistance (Cluster points) =
+    Cluster $ sortOn (distance centroid) points
+  where
+    centroid = center points
 
 -- | @'getCluster' cs p@ returns the 'Cluster' of point @p@, provided it is in the
 -- list @cs@. If, for some reason, the @p@ is found in multiple clusters, the cluster
