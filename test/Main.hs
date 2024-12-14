@@ -4,7 +4,6 @@ import KMeans.Point
 import KMeans.Algorithm
 import KMeans.Cluster
 import KMeans.OptimizeK.ElbowMethod
-import KMeans.OptimizeK.Silhouette
 
 import qualified Data.Text.Lazy as T
 import qualified Data.Text.Lazy.IO as TIO
