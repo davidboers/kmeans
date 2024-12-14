@@ -10,7 +10,7 @@ import Data.List.Extras.Argmax
 
 
 maxIter :: Int
-maxIter = 100
+maxIter = 300
 
 
 -- Call algorithm
@@ -21,8 +21,8 @@ getKMeans triesLeft k points centroids =
         nc = map newCentroid clusters
     in
     if centroids == nc || triesLeft == 0
-      then clusters
-      else getKMeans (triesLeft - 1) k points nc
+        then clusters
+        else getKMeans (triesLeft - 1) k points nc
 
 -- | @'kMeans' k ps@ creates @k@ clusters from the points in list @ps@. The kMeans 
 -- function randomizes the points to create the original centroids. Every time the 
@@ -47,7 +47,7 @@ initializeCentroids _      0 _      = []
 initializeCentroids []     _ _      = []
 initializeCentroids (r:rs) k points =
     Centroid (points !! r)
-      : initializeCentroids rs (k-1) points
+        : initializeCentroids rs (k-1) points
 
 
 -- Procedure
@@ -63,6 +63,6 @@ makeClusters centroids accum p =
 
 prependInList :: Point a => Int -> a -> [Cluster a] -> [Cluster a]
 prependInList i new l =
-  case splitAt i l of
-    (before, (Cluster nth):after) -> before ++ Cluster (new : nth) : after
-    (before, [])                  -> before ++ [Cluster [new]]
+    case splitAt i l of
+        (before, (Cluster nth):after) -> before ++ Cluster (new : nth) : after
+        (before, [])                  -> before ++ [Cluster [new]]
