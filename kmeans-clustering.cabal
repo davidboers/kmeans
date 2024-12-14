@@ -32,6 +32,8 @@ library
     build-depends:    base ^>=4.17.2.1,
                       list-extras,
                       random,
+                      text,
+                      text-metrics
 
     hs-source-dirs:   src
 
@@ -55,4 +57,9 @@ test-suite kmeans-clustering-test
     -- Test dependencies.
     build-depends:
         base ^>=4.17.2.1,
-        kmeans-clustering
+        kmeans-clustering,
+        bytestring,
+        utf8-string,
+        filepath,
+        directory,
+        text

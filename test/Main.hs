@@ -2,8 +2,18 @@ module Main (main) where
 
 import KMeans.Algorithm (kMeansStatic)
 import KMeans.Cluster (Cluster(..))
-
 import KMeans.OptimizeK.ElbowMethod
+import KMeans.OptimizeK.Silhouette
+
+import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy.IO as TIO
+
+import Prelude hiding (unlines)
+import Data.Maybe
+import Data.List
+
+import System.Directory (listDirectory)
+import System.FilePath ((</>))
 
 
 -- Coords
@@ -37,9 +47,28 @@ coordinates =
     , (21.17, 16.91) 
     ]
 
+text :: [String] -> [[T.Text]] -> T.Text
+text langNames langs = T.unlines $ map T.pack
+    [ show $ kMeansStatic 6 3 coordinates
+    , show $ elbowMethod coordinates
+    , show $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]])
+    , show $ clustersByName langNames langs $ kMeansStatic 6 3 langs
+    ]
+
+clustersByName :: [String] -> [[T.Text]] -> [Cluster [T.Text]] -> [Cluster String]
+clustersByName _         _     []     = []
+clustersByName langNames langs ((Cluster c):cs) =
+    Cluster (mapMaybe (\p -> (langNames !!) <$> elemIndex p langs) c)
+        : clustersByName langNames langs cs
 
 main :: IO ()
 main =
- do print $ kMeansStatic 6 3 coordinates
-    print $ elbowMethod coordinates
-    print $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]])
+ do langNames <- listDirectory langFolder
+    langs <- mapM ((fmap getStrings <$> TIO.readFile) . (langFolder </>)) langNames
+    TIO.writeFile "test/out.txt" $ text langNames langs
+    TIO.putStrLn $ T.unlines $ map T.unwords langs
+  where
+    langFolder = "test/languages"
+    getStrings :: T.Text -> [T.Text]
+    getStrings bs = map T.stripEnd $ T.lines bs
+
