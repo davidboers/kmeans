@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies #-}
 {-|
 
 The `Point` class is a type constraint intended to simplify the syntax, specifically to prevent too many '[[a]]'.
@@ -12,6 +13,7 @@ import Data.Text.Metrics (levenshtein)
 import Data.Char
 
 import Data.List.Extras.Argmax
+
 
 -- | Any observation to be clustered should be of a type with an instance of Point.
 --  
@@ -27,27 +29,24 @@ class Eq a => Point a where
 
 -- Coordinates
 
-instance (Eq a, RealFloat a) => Point (a, a) where
+instance Point (Double, Double) where
     -- | Point halfway between the coordinates.
     center points =
-        ( avg $ map fst points, avg $ map snd points )
-      where
-        avg :: RealFloat a => [a] -> a
-        avg l =
-            sum l / fromIntegral (L.length l)
+        (avgDouble $ map fst points, avgDouble $ map snd points)
 
     -- | Length of the hypotenuse of the triangle produced between the two coordinates as determined by the Pythagorean Theorem.
     distance (x1, y1) (x2, y2) =
-        hypotenuse
-            (fromIntegral (round x2) - fromIntegral (round x1))
-            (fromIntegral (round y2) - fromIntegral (round y1))
+        sqrt $ (dx * dx) + (dy * dy)
+      where
+        dx = x2 - x1
+        dy = y2 - y1
 
 
 -- Integrals
 
 instance Point Int where
     -- | Average @point@
-    center = round . avg
+    center = round . avgIntegral
 
     distance x y = fromIntegral $ abs $ x - y
 
@@ -75,7 +74,7 @@ instance Point a => Point [a] where
 
     -- | Euclidean distance between the two lists.
     distance xs ys =
-        sqrt . sum $ zipWith (\x y -> squared (distance x y)) xs ys
+        sqrt $ sum $ map (\d -> d * d) $ zipWith distance xs ys
 
 
 -- Utils
@@ -91,14 +90,10 @@ closestFriend ps a =
 
 -- Helpers
 
-avg :: Integral a => [a] -> Double
-avg l =
-    sum (map fromIntegral l) / fromIntegral (L.length l)
+avgIntegral :: Integral a => [a] -> Double
+avgIntegral l =
+    fromIntegral (sum l) / fromIntegral (L.length l)
 
-hypotenuse :: RealFloat a => a -> a -> a
-hypotenuse a b =
-    sqrt $ squared a + squared b
-
-squared :: RealFloat a => a -> a
-squared a =
-    a ^ (2 :: Integer)
+avgDouble :: Floating a => [a] -> a
+avgDouble l =
+    sum l / fromIntegral (L.length l)
