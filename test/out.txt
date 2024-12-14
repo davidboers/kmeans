@@ -64,3 +64,30 @@ Cluster C:
 "icelandic.txt"
 
 
+
+Closest friends:
+welsh.txt: english.txt
+turkish.txt: english.txt
+swedish.txt: welsh.txt
+spanish.txt: english.txt
+romanian.txt: english.txt
+portuguese.txt: english.txt
+polish.txt: english.txt
+maori.txt: basque.txt
+italian.txt: english.txt
+irish.txt: basque.txt
+icelandic.txt: faroese.txt
+haitian.txt: afrikaans.txt
+german.txt: dutch.txt
+french.txt: english.txt
+filipino.txt: bikol.txt
+faroese.txt: english.txt
+estonian.txt: dutch.txt
+esperanto.txt: dutch.txt
+english.txt: afrikaans.txt
+dutch.txt: afrikaans.txt
+danish.txt: dutch.txt
+bikol.txt: dutch.txt
+basque.txt: afrikaans.txt
+azerbaijani.txt: turkish.txt
+afrikaans.txt: dutch.txt

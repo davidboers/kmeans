@@ -4,7 +4,7 @@
 The `Point` class is a type constraint intended to simplify the syntax, specifically to prevent too many '[[a]]'.
 
 -}
-module KMeans.Point (Point, distance, center) where
+module KMeans.Point (Point, distance, center, closestFriend) where
 
 import Data.List as L hiding (head, tail)
 import qualified Data.Text.Lazy as T
@@ -76,6 +76,17 @@ instance Point a => Point [a] where
     -- | Euclidean distance between the two lists.
     distance xs ys =
         sqrt . sum $ zipWith (\x y -> squared (distance x y)) xs ys
+
+
+-- Utils
+
+-- | Returns the point that is the closest (least 'distance') to
+-- @a@ among points @ps@.
+--
+-- > closestFriend ps a == argmin (distance a) $ filter (/= a) ps
+closestFriend :: Point a => [a] -> a -> a
+closestFriend ps a =
+    argmin (distance a) $ filter (/= a) ps
 
 
 -- Helpers

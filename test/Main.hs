@@ -1,7 +1,8 @@
 module Main (main) where
 
-import KMeans.Algorithm (kMeansStatic)
-import KMeans.Cluster (Cluster(..))
+import KMeans.Point
+import KMeans.Algorithm
+import KMeans.Cluster
 import KMeans.OptimizeK.ElbowMethod
 import KMeans.OptimizeK.Silhouette
 
@@ -48,17 +49,29 @@ coordinates =
     ]
 
 text :: [String] -> [[T.Text]] -> T.Text
-text langNames langs = T.unlines $ map T.pack
+text langNames langs = T.unlines $ map T.pack $
     [ show $ kMeansStatic 6 3 coordinates
     , show $ elbowMethod coordinates
-    , show $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]])
+    , show $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]] :: Cluster [Int])
     , show $ clustersByName langNames langs $ kMeansStatic 6 3 langs
-    ]
+    , ""
+    , "Closest friends:"
+    ] ++
+    map (testClosestFriend langNames langs) langs
+
+testClosestFriend :: Point a => [String] -> [a] -> a -> String
+testClosestFriend names ps p =
+    fromJust (getName names ps p                   ) ++ ": " ++ 
+    fromJust (getName names ps $ closestFriend ps p)
+
+getName :: Point a => [String] -> [a] -> a -> Maybe String    
+getName names ps p =
+    (names !!) <$> elemIndex p ps
 
 clustersByName :: [String] -> [[T.Text]] -> [Cluster [T.Text]] -> [Cluster String]
-clustersByName _         _     []     = []
+clustersByName _         _     []               = []
 clustersByName langNames langs ((Cluster c):cs) =
-    Cluster (mapMaybe (\p -> (langNames !!) <$> elemIndex p langs) c)
+    Cluster (mapMaybe (getName langNames langs) c)
         : clustersByName langNames langs cs
 
 main :: IO ()
