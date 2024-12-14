@@ -36,9 +36,9 @@ instance (Eq a, RealFloat a) => Point (a, a) where
         avg l =
             sum l / fromIntegral (L.length l)
 
-    -- | Length of the hypotenouse of the triangle produced between the two coordinates as determined by the Pythagorean Theorem.
+    -- | Length of the hypotenuse of the triangle produced between the two coordinates as determined by the Pythagorean Theorem.
     distance (x1, y1) (x2, y2) =
-        hypotenouse
+        hypotenuse
             (fromIntegral (round x2) - fromIntegral (round x1))
             (fromIntegral (round y2) - fromIntegral (round y1))
 
@@ -84,8 +84,8 @@ avg :: Integral a => [a] -> Double
 avg l =
     sum (map fromIntegral l) / fromIntegral (L.length l)
 
-hypotenouse :: RealFloat a => a -> a -> a
-hypotenouse a b =
+hypotenuse :: RealFloat a => a -> a -> a
+hypotenuse a b =
     sqrt $ squared a + squared b
 
 squared :: RealFloat a => a -> a
