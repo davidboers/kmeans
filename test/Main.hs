@@ -3,6 +3,7 @@ module Main (main) where
 import KMeans.Point
 import KMeans.Algorithm
 import KMeans.Cluster
+import KMeans.Scaling
 import KMeans.OptimizeK.ElbowMethod
 
 import qualified Data.Text.Lazy as T
@@ -19,7 +20,7 @@ import System.FilePath ((</>))
 -- Coords
 
 coordinates :: [(Double, Double)]
-coordinates = 
+coordinates =
     [ (46.67, 1.28)
     , (36.21, 41.47)
     , (91.73, 35.01)
@@ -44,7 +45,7 @@ coordinates =
     , (37.75, 79.53)
     , (25.41, 97.41)
     , (35.45, 72.9)
-    , (21.17, 16.91) 
+    , (21.17, 16.91)
     ]
 
 text :: [String] -> [[T.Text]] -> T.Text
@@ -56,14 +57,32 @@ text langNames langs = T.unlines $ map T.pack $
     , ""
     , "Closest friends:"
     ] ++
-    map (testClosestFriend langNames langs) langs
+    map (testClosestFriend langNames langs) langs ++
+    [ ""
+    , "Default random points (seed 42):"
+    , show $ initCoords 10 42
+    , ""
+    , "Points plotted on a 2D Cartesian plane:"
+    ] ++
+    zipWith testPlane langNames (plotPoints langs)
 
 testClosestFriend :: Point a => [String] -> [a] -> a -> String
 testClosestFriend names ps p =
-    fromJust (getName names ps p                   ) ++ ": " ++ 
+    fromJust (getName names ps p                   ) ++ ": " ++
     fromJust (getName names ps $ closestFriend ps p)
 
-getName :: Point a => [String] -> [a] -> a -> Maybe String    
+testPlane :: String -> (Double, Double) -> String
+testPlane name coord =
+    name ++ ": " ++ show coord
+
+showSteps :: [[(Double, Double)]] -> [String]
+showSteps steps =
+    [ intercalate "," [show stepNum, show coordNum, show (fst $ steps !! (stepNum-1) !! (coordNum-1)), show (snd $ steps !! (stepNum-1) !! (coordNum-1))] 
+    | stepNum <- [1..300]
+    , coordNum <- [1..25]
+    ]
+
+getName :: Point a => [String] -> [a] -> a -> Maybe String
 getName names ps p =
     (names !!) <$> elemIndex p ps
 

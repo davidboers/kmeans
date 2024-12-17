@@ -9,9 +9,11 @@ module KMeans
     , module KMeans.Centroid
     , module KMeans.Cluster
     , module KMeans.Point
+    , module KMeans.Scaling
     ) where
 
 import KMeans.Algorithm
 import KMeans.Centroid
 import KMeans.Cluster
 import KMeans.Point
+import KMeans.Scaling

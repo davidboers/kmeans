@@ -20,6 +20,7 @@ library
                       KMeans.Centroid
                       KMeans.Cluster
                       KMeans.Point
+                      KMeans.Scaling
                       KMeans.OptimizeK.ElbowMethod
                       KMeans.OptimizeK.Silhouette
 
