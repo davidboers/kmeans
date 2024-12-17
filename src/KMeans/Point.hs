@@ -31,15 +31,12 @@ class Eq a => Point a where
 
 instance Point (Double, Double) where
     -- | Point halfway between the coordinates.
-    center points =
-        (avgDouble $ map fst points, avgDouble $ map snd points)
+    center =
+        mapBoth avgDouble . unzip
 
     -- | Length of the hypotenuse of the triangle produced between the two coordinates as determined by the Pythagorean Theorem.
     distance (x1, y1) (x2, y2) =
-        sqrt $ (dx * dx) + (dy * dy)
-      where
-        dx = x2 - x1
-        dy = y2 - y1
+        sqrt $ ((x2 - x1) ** 2) + ((y2 - y1) ** 2)
 
 
 -- Integrals
@@ -74,13 +71,13 @@ instance Point a => Point [a] where
 
     -- | Euclidean distance between the two lists.
     distance xs ys =
-        sqrt $ sum $ map (\d -> d * d) $ zipWith distance xs ys
+        sqrt $ sum $ map (**2) $ zipWith distance xs ys
 
 
 -- Utils
 
--- | Returns the point that is the closest (least 'distance') to
--- @a@ among points @ps@.
+-- | @'closestFriend' ps a@ returns the point that is the closest (least 
+-- 'distance') to @a@ among points @ps@.
 --
 -- > closestFriend ps a == argmin (distance a) $ filter (/= a) ps
 closestFriend :: Point a => [a] -> a -> a
@@ -97,3 +94,7 @@ avgIntegral l =
 avgDouble :: Floating a => [a] -> a
 avgDouble l =
     sum l / fromIntegral (L.length l)
+
+mapBoth :: (a -> b) -> (a, a) -> (b, b)
+mapBoth func (x, y) =
+    (func x, func y)
