@@ -26,20 +26,21 @@ stress distances coords =
 
 smacofStep :: [[Double]] -> [(Double, Double)] -> [(Double, Double)]
 smacofStep distances coords =
-    [ ( sum [ matrixB i j * fst (coords !! j) | j <- m ]
-      , sum [ matrixB i j * snd (coords !! j) | j <- m ]
+    [ ( sum [ matrixB i j * fst (coords !! j) | j <- m ] / fromIntegral (length coords)
+      , sum [ matrixB i j * snd (coords !! j) | j <- m ] / fromIntegral (length coords)
       )
     | i <- m
     ]
   where
     m = indices coords
 
-    matrixB i j
-        | i == j    = sum $ map weight (distances !! i)
-        | otherwise = -(weight $ distances !! i !! j)
+    matrixX = distanceMatrix coords
 
-    weight 0 = 0
-    weight d = 1 / d
+    matrixB i j
+        | i == j    = sum [ weight i j1 | j1 <- m, i /= j1 ]
+        | otherwise = -(weight i j)
+
+    weight i j = (distances !! i !! j) / (matrixX !! i !! j + 1e-2)
 
 -- | @'smacof' d triesLeft x@ Creates a set of coordinates on a 2D Cartesian plane
 -- where the distance between any 2 points is approximately the same as the distance 
@@ -53,13 +54,13 @@ smacofStep distances coords =
 smacof :: [[Double]] -> Int -> [(Double, Double)] -> [(Double, Double)]
 smacof _         0         coords = coords
 smacof distances triesLeft coords
-    | relStress < 1e-6 = nextCoords
+    | relStress < 1e-2 = nextCoords
     | otherwise        = smacof distances (triesLeft - 1) nextCoords
   where
     nextCoords = smacofStep distances coords
     nextStress = stress distances nextCoords
     thisStress = stress distances coords
-    relStress = abs (thisStress - nextStress) / thisStress
+    relStress = abs (thisStress - nextStress)
 
 -- | @'initCoords' n seed@ creates a set of @n@ coordinates, each randomized according
 -- to @seed@ for usage with the 'smacof' function. 
