@@ -7,7 +7,7 @@ The `Point` class is a type constraint intended to simplify the syntax, specific
 -}
 module KMeans.Point (Point, distance, center, closestFriend) where
 
-import Data.List as L hiding (head, tail)
+import Data.List
 import qualified Data.Text.Lazy as T
 import Data.Text.Metrics (levenshtein)
 import Data.Char
@@ -89,11 +89,11 @@ closestFriend ps a =
 
 avgIntegral :: Integral a => [a] -> Double
 avgIntegral l =
-    fromIntegral (sum l) / fromIntegral (L.length l)
+    fromIntegral (sum l) / fromIntegral (length l)
 
 avgDouble :: Floating a => [a] -> a
 avgDouble l =
-    sum l / fromIntegral (L.length l)
+    sum l / fromIntegral (length l)
 
 mapBoth :: (a -> b) -> (a, a) -> (b, b)
 mapBoth func (x, y) =
