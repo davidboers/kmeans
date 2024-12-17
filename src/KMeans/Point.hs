@@ -59,7 +59,7 @@ instance Point T.Text where
     center strings =
         T.pack $ center (map T.unpack strings)
 
-    distance x y = distance (T.unpack x) (T.unpack y) --fromIntegral $ levenshtein (T.toStrict x) (T.toStrict y)
+    distance x y = fromIntegral $ levenshtein (T.toStrict x) (T.toStrict y)
 
 
 -- Lists of anything that can be constrained by `Point`

@@ -33,62 +33,62 @@ Cluster C:
 [(1,36958),(2,19291),(3,10548),(4,9445),(5,5633),(6,3865),(7,3865),(8,3586),(9,3223),(10,3223),(11,3223),(12,2582),(13,2242),(14,2109),(15,2109),(16,1535),(17,1390),(18,979),(19,763),(20,763),(21,719),(22,651),(23,596),(24,372),(25,372)]
 [1,3,5,2,6,4,1,3,7,4,2,6]
 Cluster A:
-"azerbaijani.txt"
-"turkish.txt"
 
 Cluster B:
-"basque.txt"
+"faroese.txt"
+"english.txt"
+"haitian.txt"
+"turkish.txt"
+"spanish.txt"
+"swedish.txt"
+"italian.txt"
 "danish.txt"
+"basque.txt"
+"german.txt"
 "polish.txt"
 "french.txt"
-"german.txt"
+"afrikaans.txt"
+"icelandic.txt"
+"estonian.txt"
+"romanian.txt"
 "maori.txt"
 "bikol.txt"
 "dutch.txt"
+"azerbaijani.txt"
+"filipino.txt"
 "welsh.txt"
 "irish.txt"
-"afrikaans.txt"
-"estonian.txt"
-"romanian.txt"
-"haitian.txt"
-"esperanto.txt"
-"italian.txt"
-"filipino.txt"
-"english.txt"
-"spanish.txt"
-"swedish.txt"
 "portuguese.txt"
+"esperanto.txt"
 
 Cluster C:
-"faroese.txt"
-"icelandic.txt"
 
 
 
 Closest friends:
 welsh.txt: english.txt
-turkish.txt: english.txt
-swedish.txt: welsh.txt
-spanish.txt: english.txt
-romanian.txt: english.txt
-portuguese.txt: english.txt
-polish.txt: english.txt
-maori.txt: basque.txt
-italian.txt: english.txt
-irish.txt: basque.txt
+turkish.txt: azerbaijani.txt
+swedish.txt: danish.txt
+spanish.txt: portuguese.txt
+romanian.txt: esperanto.txt
+portuguese.txt: spanish.txt
+polish.txt: esperanto.txt
+maori.txt: filipino.txt
+italian.txt: portuguese.txt
+irish.txt: english.txt
 icelandic.txt: faroese.txt
-haitian.txt: afrikaans.txt
+haitian.txt: french.txt
 german.txt: dutch.txt
-french.txt: english.txt
+french.txt: esperanto.txt
 filipino.txt: bikol.txt
-faroese.txt: english.txt
-estonian.txt: dutch.txt
-esperanto.txt: dutch.txt
-english.txt: afrikaans.txt
+faroese.txt: icelandic.txt
+estonian.txt: esperanto.txt
+esperanto.txt: french.txt
+english.txt: esperanto.txt
 dutch.txt: afrikaans.txt
-danish.txt: dutch.txt
-bikol.txt: dutch.txt
-basque.txt: afrikaans.txt
+danish.txt: swedish.txt
+bikol.txt: filipino.txt
+basque.txt: spanish.txt
 azerbaijani.txt: turkish.txt
 afrikaans.txt: dutch.txt
 
@@ -96,28 +96,28 @@ Default random points (seed 42):
 [(1.0,9.0),(8.0,3.0),(1.0,10.0),(3.0,9.0),(2.0,2.0),(8.0,1.0),(5.0,3.0),(3.0,3.0),(6.0,9.0),(10.0,3.0)]
 
 Points plotted on a 2D Cartesian plane:
-welsh.txt: (-2821.884560507042,-9806.784002297229)
-turkish.txt: (40601.661790652826,8792.250724720732)
-swedish.txt: (-17961.06347695721,12460.933084230279)
-spanish.txt: (5434.3405578054235,-11518.57125505598)
-romanian.txt: (-27406.624691862882,-22189.037648457146)
-portuguese.txt: (10054.73306338219,271.11409189387354)
-polish.txt: (-6434.08613468976,-27301.042104933018)
-maori.txt: (-14182.910398438957,-12256.380250630693)
-italian.txt: (-1245.2134900615542,-1567.4346692937063)
-irish.txt: (27898.544314414157,27682.893903031316)
-icelandic.txt: (22256.795069276868,-47469.72102231576)
-haitian.txt: (-9060.594709658553,16751.048056686657)
-german.txt: (14104.7088731242,-11886.400375587024)
-french.txt: (20524.69154210466,-7322.384738086273)
-filipino.txt: (-1372.210274140767,-1189.1415052737477)
-faroese.txt: (-42773.551483865886,6451.34381388871)
-estonian.txt: (10182.226965441565,22989.80292931923)
-esperanto.txt: (-16707.555494936052,641.2898168685384)
-english.txt: (-637.369250384047,-1865.2426055273029)
-dutch.txt: (-1231.270355397865,-1356.6682595148304)
-danish.txt: (915.9537794031584,11987.822671566459)
-bikol.txt: (-867.2170254692583,-844.9200030226931)
-basque.txt: (-1006.7527797738388,-1031.008446239107)
-azerbaijani.txt: (-7115.361783337775,50682.603541932076)
-afrikaans.txt: (-1149.9900461235716,-1106.365747903315)
+welsh.txt: (-23.886441740027973,11.960406947305808)
+turkish.txt: (31.94101444720366,1.3802473169571743)
+swedish.txt: (-2.5409509693469072,-13.59073699185919)
+spanish.txt: (-8.521464031048028,9.667566812389003)
+romanian.txt: (-22.15124032522886,-7.688860088717291)
+portuguese.txt: (0.18026926766863766,9.793587343211367)
+polish.txt: (-20.08655742953446,-15.635044481822986)
+maori.txt: (-3.44746465585985,-29.535763406057004)
+italian.txt: (1.464299433030192,18.48380818517287)
+irish.txt: (25.04639792889242,9.86664594056542)
+icelandic.txt: (9.574592455662293,-28.98738809581526)
+haitian.txt: (-4.065222076474442,27.302662836187114)
+german.txt: (23.10922682068045,-14.789261660860566)
+french.txt: (-6.178809179528468,17.078938682284175)
+filipino.txt: (-18.16124147903228,-0.26234171268388423)
+faroese.txt: (-11.278109394305421,-27.537818411014303)
+estonian.txt: (12.605103500593554,18.244565078617953)
+esperanto.txt: (-2.503039529996325,0.9978747715443927)
+english.txt: (8.449541556888866,-0.8372141350850861)
+dutch.txt: (13.639475901801665,-14.379904190410626)
+danish.txt: (2.6574023402278963,-10.557290953773732)
+bikol.txt: (-24.98951450055625,3.48091974413191)
+basque.txt: (-17.746504813638815,19.879296558688257)
+azerbaijani.txt: (23.38641455222091,25.088826410507785)
+afrikaans.txt: (13.50282191970751,-9.423722499463347)
