@@ -62,7 +62,7 @@ instance Point T.Text where
     distance x y = fromIntegral $ levenshtein (T.toStrict x) (T.toStrict y)
 
 
--- Lists of anything that can be constrained by `Point`
+-- Lists of anything with an instance of `Point`.
 
 instance Point a => Point [a] where
     center points

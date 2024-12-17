@@ -12,7 +12,7 @@ There are two main ways of executing the algorithm. The difference is in how the
 
 I would recommend using `kMeans`, as shown below. The kMeans function randomizes the points to create the original centroids. Every time the function is called, a different set of centroids will be initialized.
 
-```Haskell
+```haskell
 
 import KMeans.Algorithm
 
@@ -30,7 +30,7 @@ main =
 
 But the library also contains `kMeansStatic`, which allows you to specify a seed for the randomized centroids. This way, you can get the same output from the algorithm every time you call it, which can be helpful for testing.
 
-```Haskell
+```haskell
 
 -- kMeansStatic :: Point a => Int -> Int -> [a] -> [Cluster a]
 
@@ -46,6 +46,13 @@ main =
 ```
 
 # `Point` instances
+
+The library provides the following instances of `Point`:
+- `Point (Double, Double)`, intended for coordinates. The distance between two points is the hypotenuse, as determined according to the [Pythagorean theorem](https://en.wikipedia.org/wiki/Pythagorean_theorem).
+- `Point Int`, intended mostly to facilitate other instances involving numerical values.
+- `Point Char`, again intended to facilitate another instance, in this case `Point Text`.
+- `Point Text`, allows clustering of text. Distance is determined according to the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance).
+- `Point [a]`, allows clustering of lists of anything that with an instance of `Point`.
 
 If the library doesn't contain an instance of the `Point` class to your needs, feel free to create one.
 
