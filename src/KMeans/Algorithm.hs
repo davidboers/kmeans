@@ -30,7 +30,7 @@ getKMeans triesLeft k points centroids =
 kMeans :: Point a => Int -> [a] -> IO [Cluster a]
 kMeans k points =
  do rands <- mapM (\_ -> randomRIO (0, length points - 1)) [0..k]
-    return $ getKMeans maxIter k points $ initializeCentroids rands k points
+    return $ getKMeans maxIter k points $ initializeCentroids points rands
 
 -- | @'kMeansStatic' seed k ps@ creates @k@ clusters from points in list @ps@. The
 -- kMeans function allows users to specify a @seed@ for the randomized centroids. 
@@ -38,28 +38,25 @@ kMeans k points =
 -- called, which can be helpful for testing.
 kMeansStatic :: Point a => Int -> Int -> [a] -> [Cluster a]
 kMeansStatic seed k points =
-    getKMeans maxIter k points $ initializeCentroids rands k points
-  where
-    rands = randomRs (0, length points - 1) (mkStdGen seed)
+    getKMeans maxIter k points $ 
+    initializeCentroids points $
+    take k $
+    randomRs (0, length points - 1) (mkStdGen seed)
 
-initializeCentroids :: Point a => [Int] -> Int -> [a] -> [Centroid a]
-initializeCentroids _      0 _      = []
-initializeCentroids []     _ _      = []
-initializeCentroids (r:rs) k points =
-    Centroid (points !! r)
-        : initializeCentroids rs (k-1) points
-
+initializeCentroids :: Point a => [a] -> [Int] -> [Centroid a]
+initializeCentroids points =
+    map (\r -> Centroid $ points !! r) 
+    
 
 -- Procedure
 
 makeClusters :: Point a => [Centroid a] -> [Cluster a] -> a -> [Cluster a]
 makeClusters centroids accum p =
-    let clusterAssignment = argminIndex (distance2Centroid p) centroids in
-    prependInList clusterAssignment p accum
-  where
-    argminIndex :: Ord b => (a -> b) -> [a] -> Int
-    argminIndex func l =
-        argmin (func . (!!) l) [0..length l - 1]
+    prependInList (assignCluster centroids p) p accum
+
+assignCluster :: Point a => [Centroid a] -> a -> Int
+assignCluster centroids p =
+    argmin (\k -> distance2Centroid p $ centroids !! k) [0..length centroids - 1]
 
 prependInList :: Point a => Int -> a -> [Cluster a] -> [Cluster a]
 prependInList i new l =
