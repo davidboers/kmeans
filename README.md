@@ -45,6 +45,7 @@ main =
 
 ```
 
+
 # `Point` instances
 
 The library provides the following instances of `Point`:
@@ -56,3 +57,27 @@ The library provides the following instances of `Point`:
 
 If the library doesn't contain an instance of the `Point` class to your needs, feel free to create one.
 
+
+# Scaling
+
+The library also provides a module to permit [multidimensional scaling](https://en.wikipedia.org/wiki/Multidimensional_scaling) (MDS) using the SMACOF (Scaling by Majorizing a Complicated Function) method. Specifically, the user can create a set of coordinates on a 2d Cartesian plane, to visualize a set of points, even if the `Point` type doesn't lend itself to visual presentation.
+
+```haskell
+
+import KMeans.Scaling
+
+numbers :: [Int]
+numbers = [ 10, 16, 20, 17 ]
+
+main = print $ plotPoints numbers
+-- [ (-1.87, -5.40)
+-- , (0.84, 0.11)
+-- , (0.23, 4.16)
+-- , (0.80, 1.13)
+-- ] 
+
+```
+
+The above coordinates are plotted below:
+
+<img src="example_scale.png">
