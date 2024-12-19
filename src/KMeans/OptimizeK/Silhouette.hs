@@ -4,6 +4,8 @@ import KMeans.Point
 import KMeans.Cluster
 import KMeans.Algorithm
 
+import Data.Maybe
+
 import Data.List.Extras.Argmax
 
 -- | @'silhouetteCoefficient' maxK seed ps@ returns the optimal @k@ between 2 and
@@ -92,9 +94,12 @@ meanIntraClusterDistance c p =
 -- containing @p@, and \(d(i,j)\) is the 'distance' function.
 meanNearestClusterDistance :: Point a => [Cluster a] -> a -> Double
 meanNearestClusterDistance clusters p =
-    minimum $
-        map (avgD . toList . fmap (distance p)) $
-        filter (\cluster -> not $ p `KMeans.Cluster.elem` cluster) clusters
+    minimum $ mapMaybe (meanClusterDistance p) clusters
+
+meanClusterDistance :: Point a => a -> Cluster a -> Maybe Double
+meanClusterDistance p c
+    | p `elem` c = Nothing
+    | otherwise  = Just $ avgD $ map (distance p) (toList c)
 
 avgD :: [Double] -> Double
 avgD l =
