@@ -21,7 +21,7 @@ getKMeans triesLeft k points centroids
     | centroids == nc || triesLeft == 0 = clusters
     | otherwise                         = getKMeans (triesLeft - 1) k points nc
   where
-    clusters = foldl (makeClusters centroids) (replicate k (Cluster [])) points
+    clusters = foldl (makeClusters centroids) (replicate k emptyCluster) points
     nc = map newCentroid clusters
 
 -- | @'kMeans' k ps@ creates @k@ clusters from the points in list @ps@. The kMeans
@@ -29,7 +29,7 @@ getKMeans triesLeft k points centroids
 -- function is called, a different set of centroids will be initialized.
 kMeans :: Point a => Int -> [a] -> IO [Cluster a]
 kMeans k points =
- do rands <- mapM (\_ -> randomRIO (0, length points - 1)) [0..k]
+ do rands <- mapM (const $ randomRIO (0, length points - 1)) [0..k]
     return $ getKMeans maxIter k points $ initializeCentroids points rands
 
 -- | @'kMeansStatic' seed k ps@ creates @k@ clusters from points in list @ps@. The

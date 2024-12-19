@@ -6,7 +6,7 @@
 The `Cluster` data type.
 
 -}
-module KMeans.Cluster (Cluster(..), sortCluster, sortClusterByDistance, getCluster, toList, elem) where
+module KMeans.Cluster (Cluster(..), sortCluster, sortClusterByDistance, getCluster, toList, elem, emptyCluster) where
 
 import           KMeans.Point
 import           KMeans.Utils
@@ -55,6 +55,12 @@ showListCluster i =
     showString ("Cluster " ++ [c] ++ ":\n") . show
   where
     c = chr (ord 'A' + i)
+
+-- | @'emptyCluster'@ returns a cluster with no points.
+--
+-- > emptyCluster == Cluster []
+emptyCluster :: Cluster a
+emptyCluster = Cluster []
 
 
 -- Utils
