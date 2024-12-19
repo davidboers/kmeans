@@ -26,6 +26,4 @@ inertia points k =
 sqedDistances :: Point a => Cluster a -> [Int]
 sqedDistances c =
     let centroid = newCentroid c in
-    map (sq . (`distance2Centroid` centroid)) (toList c)
-  where
-    sq a = round $ a ** 2
+    map (round . (**2) . (`distance2Centroid` centroid)) (toList c)

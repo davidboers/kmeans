@@ -15,20 +15,18 @@ distanceMatrix ps =
 
 stress :: [[Double]] -> [(Double, Double)] -> Double
 stress distances coords =
-    let coordDeltas = distanceMatrix coords
-        m = indices coords
-    in
+    let coordDeltas = distanceMatrix coords in
     sum [ (distances   !! i !! j) -
           (coordDeltas !! i !! j) ** 2
-        | i <- m
-        , j <- m
+        | i <- indices coords
+        , j <- indices coords
         , i < j
         ]
 
 smacofStep :: [[Double]] -> [(Double, Double)] -> [(Double, Double)]
 smacofStep distances coords =
-    [ ( sum [ matrixB i j * fst (coords !! j) | j <- m ] / fromIntegral (length coords)
-      , sum [ matrixB i j * snd (coords !! j) | j <- m ] / fromIntegral (length coords)
+    [ ( avgDouble [ matrixB i j * fst (coords !! j) | j <- m ]
+      , avgDouble [ matrixB i j * snd (coords !! j) | j <- m ]
       )
     | i <- m
     ]
