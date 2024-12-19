@@ -17,13 +17,12 @@ maxIter = 300
 -- Call algorithm
 
 getKMeans :: Point a => Int -> Int -> [a] -> [Centroid a] -> [Cluster a]
-getKMeans triesLeft k points centroids =
-    let clusters = foldl (makeClusters centroids) (replicate k (Cluster [])) points
-        nc = map newCentroid clusters
-    in
-    if centroids == nc || triesLeft == 0
-        then clusters
-        else getKMeans (triesLeft - 1) k points nc
+getKMeans triesLeft k points centroids
+    | centroids == nc || triesLeft == 0 = clusters
+    | otherwise                         = getKMeans (triesLeft - 1) k points nc
+  where
+    clusters = foldl (makeClusters centroids) (replicate k (Cluster [])) points
+    nc = map newCentroid clusters
 
 -- | @'kMeans' k ps@ creates @k@ clusters from the points in list @ps@. The kMeans
 -- function randomizes the points to create the original centroids. Every time the
