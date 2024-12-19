@@ -10,7 +10,7 @@ build-type:         Simple
 extra-doc-files:    CHANGELOG.md
 
 common warnings
-    ghc-options: -Wall
+    ghc-options:      -Wall
 
 library
     import:           warnings
@@ -27,10 +27,6 @@ library
 
     other-modules:  KMeans.Utils
 
-    -- LANGUAGE extensions used by modules in this package.
-    -- other-extensions:
-
-    -- Other library packages from which modules are imported.
     build-depends:    base,
                       list-extras,
                       random,
@@ -45,10 +41,6 @@ test-suite kmeans-clustering-test
     import:           warnings
 
     default-language: Haskell2010
-
-    --other-modules:
-
-    -- other-extensions:
 
     type:             exitcode-stdio-1.0
 
