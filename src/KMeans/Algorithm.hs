@@ -3,6 +3,7 @@ module KMeans.Algorithm (kMeans, kMeansStatic) where
 import KMeans.Point
 import KMeans.Centroid
 import KMeans.Cluster
+import KMeans.Utils
 
 import System.Random
 
@@ -56,7 +57,7 @@ makeClusters centroids accum p =
 
 assignCluster :: Point a => [Centroid a] -> a -> Int
 assignCluster centroids p =
-    argmin (\k -> distance2Centroid p $ centroids !! k) [0..length centroids - 1]
+    argmin (\k -> distance2Centroid p $ centroids !! k) (indices centroids)
 
 prependInList :: Point a => Int -> a -> [Cluster a] -> [Cluster a]
 prependInList i new l =
