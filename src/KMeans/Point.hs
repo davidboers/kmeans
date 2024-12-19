@@ -14,6 +14,8 @@ import Data.Char
 
 import Data.List.Extras.Argmax
 
+import KMeans.Utils
+
 
 -- | Any observation to be clustered should be of a type with an instance of Point.
 --  
@@ -83,18 +85,3 @@ instance Point a => Point [a] where
 closestFriend :: Point a => [a] -> a -> a
 closestFriend ps a =
     argmin (distance a) $ filter (/= a) ps
-
-
--- Helpers
-
-avgIntegral :: Integral a => [a] -> Double
-avgIntegral l =
-    fromIntegral (sum l) / fromIntegral (length l)
-
-avgDouble :: Floating a => [a] -> a
-avgDouble l =
-    sum l / fromIntegral (length l)
-
-mapBoth :: (a -> b) -> (a, a) -> (b, b)
-mapBoth func (x, y) =
-    (func x, func y)

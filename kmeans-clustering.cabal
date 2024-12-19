@@ -21,10 +21,11 @@ library
                       KMeans.Cluster
                       KMeans.Point
                       KMeans.Scaling
+                      KMeans.OptimizeK
                       KMeans.OptimizeK.ElbowMethod
                       KMeans.OptimizeK.Silhouette
 
-    -- other-modules: 
+    other-modules:  KMeans.Utils
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

@@ -3,6 +3,7 @@ module KMeans.OptimizeK.Silhouette (silhouetteCoefficient, meanSilhouetteScore, 
 import KMeans.Point
 import KMeans.Cluster
 import KMeans.Algorithm
+import KMeans.Utils
 
 import Data.Maybe
 
@@ -43,7 +44,7 @@ silhouetteCoefficient maxK seed points =
 meanSilhouetteScore :: Point a => Int -> [a] -> Int -> Double
 meanSilhouetteScore seed points k =
     let clusters = kMeansStatic seed k points in
-    avgD $ map (silhouetteScore clusters) points
+    avgDouble $ map (silhouetteScore clusters) points
 
 -- | @'silhouetteScore' clusters p@ returns the Silhouette score for a single point @p@.
 --
@@ -99,8 +100,4 @@ meanNearestClusterDistance clusters p =
 meanClusterDistance :: Point a => a -> Cluster a -> Maybe Double
 meanClusterDistance p c
     | p `elem` c = Nothing
-    | otherwise  = Just $ avgD $ map (distance p) (toList c)
-
-avgD :: [Double] -> Double
-avgD l =
-    sum l / fromIntegral (length l)
+    | otherwise  = Just $ avgDouble $ map (distance p) (toList c)

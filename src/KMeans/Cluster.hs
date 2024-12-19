@@ -9,9 +9,9 @@ The `Cluster` data type.
 module KMeans.Cluster (Cluster(..), sortCluster, sortClusterByDistance, getCluster, toList, elem) where
 
 import KMeans.Point
+import KMeans.Utils
 
 import Data.Foldable (Foldable(..))
-
 import Data.List
 import Data.Char
 
@@ -87,7 +87,3 @@ sortClusterByDistance (Cluster points) =
 getCluster :: Point a => [Cluster a] -> a -> Cluster a
 getCluster clusters point =
     head $ filter (\c -> point `elem` c) clusters
-
-mapIndex :: (Int -> a -> b) -> [a] -> [b]
-mapIndex f xs =
-    zipWith f [0 .. length xs - 1] xs

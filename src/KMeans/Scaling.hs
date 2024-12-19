@@ -3,6 +3,7 @@ module KMeans.Scaling (plotPoints, initCoords, smacof, distanceMatrix, smacofSte
 import System.Random
 
 import KMeans.Point
+import KMeans.Utils
 
 
 -- | @'distanceMatrix ps'@ creates a matrix of the distances between each
@@ -88,10 +89,3 @@ smacofSteps distances triesLeft coords =
 plotPoints :: Point a => [a] -> [(Double, Double)]
 plotPoints ps =
     smacof (distanceMatrix ps) 300 (initCoords (length ps) 42)
-
-
--- Utils
-
-indices :: [a] -> [Int]
-indices l =
-    [0..(length l -1)]
