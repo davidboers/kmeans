@@ -5,6 +5,7 @@ import KMeans.Algorithm
 import KMeans.Cluster
 import KMeans.Scaling
 import KMeans.OptimizeK.ElbowMethod
+import KMeans.OptimizeK.Silhouette
 
 import qualified Data.Text.Lazy as T
 import qualified Data.Text.Lazy.IO as TIO
@@ -52,6 +53,7 @@ text :: [String] -> [[T.Text]] -> T.Text
 text langNames langs = T.unlines $ map T.pack $
     [ show $ kMeansStatic 6 3 coordinates
     , show $ elbowMethod coordinates
+    , show $ silhouetteCoefficient (length coordinates) 6 coordinates
     , show $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]] :: Cluster [Int])
     , show $ clustersByName langNames langs $ kMeansStatic 6 3 langs
     , ""
