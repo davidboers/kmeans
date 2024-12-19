@@ -50,7 +50,7 @@ instance Point Int where
     distance x y = fromIntegral $ abs $ x - y
 
 instance Point Char where -- Not technically an integral but whatever
-    center chars = argmax (\c -> length $ filter (c ==) chars) chars
+    center chars = argmax (`count` chars) chars
 
     distance x y = distance (ord x) (ord y)
 
