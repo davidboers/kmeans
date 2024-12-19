@@ -14,8 +14,8 @@ mapBoth func (x, y) =
 
 mapIndex :: (Int -> a -> b) -> [a] -> [b]
 mapIndex f xs =
-    zipWith f [0 .. length xs - 1] xs
+    zipWith f (indices xs) xs
 
 indices :: [a] -> [Int]
 indices l =
-    [0..(length l -1)]
+    [0..(length l - 1)]
