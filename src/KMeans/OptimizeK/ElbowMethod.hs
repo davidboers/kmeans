@@ -1,9 +1,9 @@
 module KMeans.OptimizeK.ElbowMethod (elbowMethod, inertia) where
 
-import KMeans.Point
-import KMeans.Cluster
-import KMeans.Centroid
 import KMeans.Algorithm
+import KMeans.Centroid
+import KMeans.Cluster
+import KMeans.Point
 
 -- | @'elbowMethod' ps@ returns a map of keys, where [(k, wcss)], for subjective 
 -- inspection.
@@ -26,6 +26,6 @@ inertia points k =
 sqedDistances :: Point a => Cluster a -> [Int]
 sqedDistances c =
     let centroid = newCentroid c in
-    toList $ fmap (sq . (`distance2Centroid` centroid)) c
+    map (sq . (`distance2Centroid` centroid)) (toList c)
   where
-    sq a = round $ a ^ (2 :: Integer)
+    sq a = round $ a ** 2
