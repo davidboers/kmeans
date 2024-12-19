@@ -36,7 +36,7 @@ silhouetteCoefficient maxK seed points =
 -- | @'meanSilhouetteScore' seed ps k@ returns the average Silhouette score of points 
 -- @ps@ sorted into @k@ clusters. 
 -- 
--- This function uses the 'kMeanStatic' function to cluster the @ps@. The given @seed@
+-- This function uses the 'kMeansStatic' function to cluster the @ps@. The given @seed@
 -- is used to initialize the centroids.
 meanSilhouetteScore :: Point a => Int -> [a] -> Int -> Double
 meanSilhouetteScore seed points k =

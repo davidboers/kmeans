@@ -1,6 +1,11 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-|
+
+The `Cluster` data type.
+
+-}
 module KMeans.Cluster (Cluster(..), sortCluster, sortClusterByDistance, getCluster, toList, elem) where
 
 import KMeans.Point
@@ -14,11 +19,11 @@ import Data.Char
 -- wrapper type are produced by the clustering algorithm.
 -- 
 -- Although the type wrapper is not constrained by 'Point', it is not recommended that
--- a non-'Point' type be put in a @Cluster@. In general, functions in this library 
--- impose the constraint when a @Cluster@ is passed to, or returned from, a function.
+-- a non-'Point' type be put in a cluster. In general, functions in this library 
+-- impose the constraint when a cluster is passed to, or returned from, a function.
 -- 
--- Instances of 'Functor', 'Foldable', and 'Traversable' exist, allowing for @Cluster@
--- variables to be handled in a similar way to lists:
+-- Instances of 'Functor', 'Foldable', and 'Traversable' exist, allowing for clusters
+-- to be handled in a similar way to lists:
 --
 -- >>> concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]])
 -- [1,3,5,2,6,4,1,3,7,4,2,6]

@@ -20,7 +20,7 @@ import Data.List.Extras.Argmax
 class Eq a => Point a where
     -- | @'center' points@ returns the center of a group of Points of the same type.
     -- Most likely, this will be an average of the given @points@. The function is called
-    -- to create the centroid of a 'Cluster'.
+    -- to create the centroid of a 'KMeans.Cluster'.
     center :: [a] -> a
 
     -- | @'distance' x y@ returns the distance between a Point @x@ and @y@ in 'Double' form. 
