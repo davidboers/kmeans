@@ -1,13 +1,13 @@
 module KMeans.Algorithm (kMeans, kMeansStatic) where
 
-import KMeans.Point
-import KMeans.Centroid
-import KMeans.Cluster
-import KMeans.Utils
+import           KMeans.Centroid
+import           KMeans.Cluster
+import           KMeans.Point
+import           KMeans.Utils
 
-import System.Random
+import           System.Random
 
-import Data.List.Extras.Argmax
+import           Data.List.Extras.Argmax
 
 
 maxIter :: Int
@@ -25,8 +25,8 @@ getKMeans triesLeft k points centroids =
         then clusters
         else getKMeans (triesLeft - 1) k points nc
 
--- | @'kMeans' k ps@ creates @k@ clusters from the points in list @ps@. The kMeans 
--- function randomizes the points to create the original centroids. Every time the 
+-- | @'kMeans' k ps@ creates @k@ clusters from the points in list @ps@. The kMeans
+-- function randomizes the points to create the original centroids. Every time the
 -- function is called, a different set of centroids will be initialized.
 kMeans :: Point a => Int -> [a] -> IO [Cluster a]
 kMeans k points =
@@ -34,20 +34,20 @@ kMeans k points =
     return $ getKMeans maxIter k points $ initializeCentroids points rands
 
 -- | @'kMeansStatic' seed k ps@ creates @k@ clusters from points in list @ps@. The
--- kMeans function allows users to specify a @seed@ for the randomized centroids. 
+-- kMeans function allows users to specify a @seed@ for the randomized centroids.
 -- This way, the same output from the algorithm can be obtained every time it is
 -- called, which can be helpful for testing.
 kMeansStatic :: Point a => Int -> Int -> [a] -> [Cluster a]
 kMeansStatic seed k points =
-    getKMeans maxIter k points $ 
+    getKMeans maxIter k points $
     initializeCentroids points $
     take k $
     randomRs (0, length points - 1) (mkStdGen seed)
 
 initializeCentroids :: Point a => [a] -> [Int] -> [Centroid a]
 initializeCentroids points =
-    map (\r -> Centroid $ points !! r) 
-    
+    map (\r -> Centroid $ points !! r)
+
 
 -- Procedure
 

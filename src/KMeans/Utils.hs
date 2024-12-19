@@ -1,4 +1,4 @@
-module KMeans.Utils where 
+module KMeans.Utils where
 
 avgIntegral :: Integral a => [a] -> Double
 avgIntegral l =

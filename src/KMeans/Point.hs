@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies      #-}
 {-|
 
 The `Point` class is a type constraint intended to simplify the syntax, specifically to prevent too many '[[a]]'.
@@ -7,25 +7,25 @@ The `Point` class is a type constraint intended to simplify the syntax, specific
 -}
 module KMeans.Point (Point, distance, center, closestFriend) where
 
-import Data.List
-import qualified Data.Text.Lazy as T
-import Data.Text.Metrics (levenshtein)
-import Data.Char
+import           Data.Char
+import           Data.List
+import qualified Data.Text.Lazy          as T
+import           Data.Text.Metrics       (levenshtein)
 
-import Data.List.Extras.Argmax
+import           Data.List.Extras.Argmax
 
-import KMeans.Utils
+import           KMeans.Utils
 
 
 -- | Any observation to be clustered should be of a type with an instance of Point.
---  
+--
 class Eq a => Point a where
     -- | @'center' points@ returns the center of a group of Points of the same type.
     -- Most likely, this will be an average of the given @points@. The function is called
     -- to create the centroid of a 'KMeans.Cluster'.
     center :: [a] -> a
 
-    -- | @'distance' x y@ returns the distance between a Point @x@ and @y@ in 'Double' form. 
+    -- | @'distance' x y@ returns the distance between a Point @x@ and @y@ in 'Double' form.
     distance :: a -> a -> Double
 
 
@@ -78,7 +78,7 @@ instance Point a => Point [a] where
 
 -- Utils
 
--- | @'closestFriend' ps a@ returns the point that is the closest (least 
+-- | @'closestFriend' ps a@ returns the point that is the closest (least
 -- 'distance') to @a@ among points @ps@.
 --
 -- > closestFriend ps a == argmin (distance a) $ filter (/= a) ps

@@ -1,9 +1,9 @@
 module KMeans.Scaling (plotPoints, initCoords, smacof, distanceMatrix, smacofSteps) where
 
-import System.Random
+import           System.Random
 
-import KMeans.Point
-import KMeans.Utils
+import           KMeans.Point
+import           KMeans.Utils
 
 
 -- | @'distanceMatrix ps'@ creates a matrix of the distances between each
@@ -44,13 +44,13 @@ smacofStep distances coords =
     weight i j = (distances !! i !! j) / (matrixX !! i !! j + 1e-2)
 
 -- | @'smacof' d triesLeft x@ Creates a set of coordinates on a 2D Cartesian plane
--- where the distance between any 2 points is approximately the same as the distance 
+-- where the distance between any 2 points is approximately the same as the distance
 -- provided in matrix @d@ for the two respective points. A native implementation of
 -- the SMACOF (Scaling by Majorizing a Complicated Function) method is used. This
 -- function is exposed to allow for customized usage. The 'plotPoints' method is
--- recommended instead. The algorithm will continue calculating until @triesLeft@ is 
+-- recommended instead. The algorithm will continue calculating until @triesLeft@ is
 -- 0, or until the marginal gain of continuing (as indicated by the loss function),
--- fails under @1e-3@. An initialized set of coords must be provided: @x@. The 
+-- fails under @1e-3@. An initialized set of coords must be provided: @x@. The
 -- 'initCoords' function is recommended for this purpose.
 smacof :: [[Double]] -> Int -> [(Double, Double)] -> [(Double, Double)]
 smacof _         0         coords = coords
@@ -64,7 +64,7 @@ smacof distances triesLeft coords
     relStress = abs (thisStress - nextStress)
 
 -- | @'initCoords' n seed@ creates a set of @n@ coordinates, each randomized according
--- to @seed@ for usage with the 'smacof' function. 
+-- to @seed@ for usage with the 'smacof' function.
 initCoords :: Int -> Int -> [(Double, Double)]
 initCoords n seed =
     uncurry zip $

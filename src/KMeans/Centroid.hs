@@ -1,7 +1,7 @@
 module KMeans.Centroid (Centroid(..), distance2Centroid, newCentroid) where
 
-import KMeans.Point
-import KMeans.Cluster
+import           KMeans.Cluster
+import           KMeans.Point
 
 -- | Wrapper type for a type constrained by 'Point'. Variables of this wrapper type
 -- represent centroids.
@@ -9,7 +9,7 @@ newtype (Point a) => Centroid a = Centroid a
     deriving (Eq)
 
 
--- | @'distance2Centroid' a c@ returns the distance between a 'Point' @a@ and 
+-- | @'distance2Centroid' a c@ returns the distance between a 'Point' @a@ and
 -- 'Centroid' @c@.
 --
 -- > distance2Centroid a (Centroid c) = distance a c

@@ -1,6 +1,6 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE RankNTypes           #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-|
 
 The `Cluster` data type.
@@ -8,20 +8,20 @@ The `Cluster` data type.
 -}
 module KMeans.Cluster (Cluster(..), sortCluster, sortClusterByDistance, getCluster, toList, elem) where
 
-import KMeans.Point
-import KMeans.Utils
+import           KMeans.Point
+import           KMeans.Utils
 
-import Data.Foldable (Foldable(..))
-import Data.List
-import Data.Char
+import           Data.Char
+import           Data.Foldable (Foldable (..))
+import           Data.List
 
--- | Wrapper type for a list of any type constrained by 'Point'. Variables of this 
+-- | Wrapper type for a list of any type constrained by 'Point'. Variables of this
 -- wrapper type are produced by the clustering algorithm.
--- 
+--
 -- Although the type wrapper is not constrained by 'Point', it is not recommended that
--- a non-'Point' type be put in a cluster. In general, functions in this library 
+-- a non-'Point' type be put in a cluster. In general, functions in this library
 -- impose the constraint when a cluster is passed to, or returned from, a function.
--- 
+--
 -- Instances of 'Functor', 'Foldable', and 'Traversable' exist, allowing for clusters
 -- to be handled in a similar way to lists:
 --
@@ -46,9 +46,9 @@ instance Traversable Cluster where
 instance (Point a, Show a) => Show (Cluster a) where
     show cluster = unlines $ map show (toList cluster)
 
-    -- | Creates a multiline string, displaying the clustered points. Each cluster is 
+    -- | Creates a multiline string, displaying the clustered points. Each cluster is
     -- assigned a letter, A through Z.
-    showList clusters = (++) (unlines $ mapIndex showListCluster $ map sortClusterByDistance clusters) 
+    showList clusters = (++) (unlines $ mapIndex showListCluster $ map sortClusterByDistance clusters)
 
 showListCluster :: (Point a, Show a) => Int -> Cluster a -> String
 showListCluster i =
@@ -59,7 +59,7 @@ showListCluster i =
 
 -- Utils
 
--- | @'sortCluster' x@ sorts the points in cluster @x@. @a@ must be an instance of 'Ord'. 
+-- | @'sortCluster' x@ sorts the points in cluster @x@. @a@ must be an instance of 'Ord'.
 -- A new 'Cluster' of the sorted 'Point's is returned.
 --
 -- > sortCluster (Cluster points) == Cluster (sort points)

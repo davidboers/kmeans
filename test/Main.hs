@@ -1,21 +1,21 @@
 module Main (main) where
 
-import KMeans.Point
-import KMeans.Algorithm
-import KMeans.Cluster
-import KMeans.Scaling
-import KMeans.OptimizeK.ElbowMethod
-import KMeans.OptimizeK.Silhouette
+import           KMeans.Algorithm
+import           KMeans.Cluster
+import           KMeans.OptimizeK.ElbowMethod
+import           KMeans.OptimizeK.Silhouette
+import           KMeans.Point
+import           KMeans.Scaling
 
-import qualified Data.Text.Lazy as T
-import qualified Data.Text.Lazy.IO as TIO
+import qualified Data.Text.Lazy               as T
+import qualified Data.Text.Lazy.IO            as TIO
 
-import Prelude hiding (unlines)
-import Data.Maybe
-import Data.List
+import           Data.List
+import           Data.Maybe
+import           Prelude                      hiding (unlines)
 
-import System.Directory (listDirectory)
-import System.FilePath ((</>))
+import           System.Directory             (listDirectory)
+import           System.FilePath              ((</>))
 
 
 -- Coords
@@ -79,7 +79,7 @@ testPlane name coord =
 
 showSteps :: [[(Double, Double)]] -> [String]
 showSteps steps =
-    [ intercalate "," [show stepNum, show coordNum, show (fst $ steps !! (stepNum-1) !! (coordNum-1)), show (snd $ steps !! (stepNum-1) !! (coordNum-1))] 
+    [ intercalate "," [show stepNum, show coordNum, show (fst $ steps !! (stepNum-1) !! (coordNum-1)), show (snd $ steps !! (stepNum-1) !! (coordNum-1))]
     | stepNum <- [1..300]
     , coordNum <- [1..25]
     ]
