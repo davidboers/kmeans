@@ -25,13 +25,15 @@ library
                       KMeans.OptimizeK.ElbowMethod
                       KMeans.OptimizeK.Silhouette
 
-    other-modules:  KMeans.Utils
+    other-modules:    KMeans.Utils
 
     build-depends:    base,
+                      hashable,
                       list-extras,
                       random,
                       text,
-                      text-metrics
+                      text-metrics,
+                      unordered-containers
 
     hs-source-dirs:   src
 

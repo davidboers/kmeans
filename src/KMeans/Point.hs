@@ -8,11 +8,18 @@ The `Point` class is a type constraint intended to simplify the syntax, specific
 module KMeans.Point (Point, distance, center, closestFriend) where
 
 import Data.Char
-import Data.List
+
 import qualified Data.Text.Lazy as T
 import Data.Text.Metrics (levenshtein)
 
+import Data.List
 import Data.List.Extras.Argmax
+
+import Data.Maybe
+
+import Data.Hashable
+
+import qualified Data.HashMap.Strict as HM
 
 import KMeans.Utils
 
@@ -68,6 +75,18 @@ instance Point a => Point [a] where
     -- \| Euclidean distance between the two lists.
     distance xs ys =
         sqrt $ sum $ map (** 2) $ zipWith distance xs ys
+
+-- HashMaps
+
+instance (Hashable k, Eq k, Point v) => Point (HM.HashMap k v) where
+    center hms = HM.fromList $ zip keys $ map (\k -> center $ mapMaybe (HM.!? k) hms) keys
+      where
+        keys = nub $ concatMap HM.keys hms  
+
+    distance x y =
+        sum $
+            HM.elems $
+            HM.intersectionWith distance x y
 
 -- Utils
 
