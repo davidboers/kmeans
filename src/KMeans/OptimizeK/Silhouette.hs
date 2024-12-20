@@ -38,10 +38,13 @@ user can provide a smaller @maxK@. For example, if @length points >= 50@:
 
 >>> let maxK = fromIntegral $ length points / 2.0
 >>> silhouetteScore maxK 100 points
+
+Note however that the function will not bother to test for any @k@ greater than 
+@length points@.
 -}
 silhouetteCoefficient :: Point a => Int -> Int -> [a] -> Int
 silhouetteCoefficient maxK seed points =
-    argmax (meanSilhouetteScore seed points) [2 .. maxK]
+    argmax (meanSilhouetteScore seed points) [2 .. (min maxK (length points))]
 
 {- | @'meanSilhouetteScore' seed ps k@ returns the average Silhouette score of points
 @ps@ sorted into @k@ clusters.
