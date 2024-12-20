@@ -1,4 +1,4 @@
-module KMeans.Scaling (plotPoints, initCoords, smacof, distanceMatrix, smacofSteps) where
+module KMeans.Scaling (plotPoints, initCoords, smacof, distanceMatrix, smacofSteps, plotNamedPoints) where
 
 import System.Random
 
@@ -95,3 +95,8 @@ information on multidimensional scaling, see [here](https://en.wikipedia.org/wik
 plotPoints :: Point a => [a] -> [(Double, Double)]
 plotPoints ps =
     smacof (distanceMatrix ps) 300 (initCoords (length ps) 42)
+
+-- | @'plotNamedPoints' namedPoints@ returns the plotted coordinates while maintaining each point's name.
+plotNamedPoints :: (Eq n, Point a) => [Named n a] -> [Named n (Double, Double)]
+plotNamedPoints nps =
+    namePoints (map name nps) $ plotPoints nps

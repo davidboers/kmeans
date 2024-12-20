@@ -1,11 +1,12 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE TypeFamilies #-}
 
 {- |
 
 The `Point` class is a type constraint intended to simplify the syntax, specifically to prevent too many '[[a]]'.
 -}
-module KMeans.Point (Point, distance, center, closestFriend, Named (..)) where
+module KMeans.Point (Point, distance, center, closestFriend, Named (..), namePoints) where
 
 import Data.Char
 
@@ -79,7 +80,7 @@ instance Point a => Point [a] where
 -- HashMaps
 
 instance (Hashable k, Eq k, Point v) => Point (HM.HashMap k v) where
-    center hms = 
+    center hms =
         HM.fromList $ zip keys $ map (\k -> center $ mapMaybe (HM.!? k) hms) keys
       where
         keys = nub $ concatMap HM.keys hms
@@ -92,14 +93,19 @@ instance (Hashable k, Eq k, Point v) => Point (HM.HashMap k v) where
 
 -- Named Points
 
+-- | This data type exists to facilitate the clustering of labeled data formats.
 data Point a => Named n a
-    = Named
+    = -- | An actual data point to cluster.
+      Named
         { name :: n
         , point :: a
+        -- ^ Constrained by 'Point', handed to clustering algorithm.
         }
-    | Virtual a
-    deriving Eq
+    | -- | An imaginary point that lacks a name. Centroids are initialized using this constructor.
+      Virtual a
+    deriving (Eq)
 
+-- | Point instance
 instance (Eq n, Point a) => Point (Named n a) where
     center named = Virtual $ center (map point named)
 
@@ -107,6 +113,19 @@ instance (Eq n, Point a) => Point (Named n a) where
     distance (Named{point = x}) (Virtual y) = distance x y
     distance (Virtual x) (Named{point = y}) = distance x y
     distance (Virtual x) (Virtual y) = distance x y
+
+instance (Show n, Point a) => Show (Named n a) where
+    show (Named{name}) = show name
+    show (Virtual _) = show "Virtual point"
+
+{- | @'namePoints' names points@ casts @points@ to a list of named points. Each
+point is assigned the name provided at the same index in the @names@ parameter.
+
+> namePoints names points == zipWith Named names points
+-}
+namePoints :: Point a => [n] -> [a] -> [Named n a]
+namePoints =
+    zipWith Named
 
 -- Utils
 

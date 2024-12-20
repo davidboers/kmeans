@@ -36,62 +36,62 @@ Cluster C:
 Cluster A:
 
 Cluster B:
-"faroese.txt"
+"swedish.txt"
+"danish.txt"
+"spanish.txt"
+"esperanto.txt"
+"italian.txt"
+"dutch.txt"
+"portuguese.txt"
+"afrikaans.txt"
+"bikol.txt"
 "english.txt"
 "haitian.txt"
-"turkish.txt"
-"spanish.txt"
-"swedish.txt"
-"italian.txt"
-"danish.txt"
-"basque.txt"
-"german.txt"
-"polish.txt"
 "french.txt"
-"afrikaans.txt"
-"icelandic.txt"
-"estonian.txt"
+"basque.txt"
+"faroese.txt"
+"polish.txt"
 "romanian.txt"
-"maori.txt"
-"bikol.txt"
-"dutch.txt"
-"azerbaijani.txt"
+"turkish.txt"
+"german.txt"
 "filipino.txt"
-"welsh.txt"
+"estonian.txt"
+"maori.txt"
+"icelandic.txt"
 "irish.txt"
-"portuguese.txt"
-"esperanto.txt"
+"welsh.txt"
+"azerbaijani.txt"
 
 Cluster C:
 
 
 
 Closest friends:
-welsh.txt: english.txt
-turkish.txt: azerbaijani.txt
-swedish.txt: danish.txt
-spanish.txt: portuguese.txt
-romanian.txt: esperanto.txt
-portuguese.txt: spanish.txt
-polish.txt: esperanto.txt
-maori.txt: filipino.txt
-italian.txt: portuguese.txt
-irish.txt: english.txt
-icelandic.txt: faroese.txt
-haitian.txt: french.txt
-german.txt: dutch.txt
-french.txt: esperanto.txt
-filipino.txt: bikol.txt
-faroese.txt: icelandic.txt
-estonian.txt: esperanto.txt
-esperanto.txt: french.txt
-english.txt: esperanto.txt
-dutch.txt: afrikaans.txt
-danish.txt: swedish.txt
-bikol.txt: filipino.txt
-basque.txt: spanish.txt
-azerbaijani.txt: turkish.txt
-afrikaans.txt: dutch.txt
+"welsh.txt": "english.txt"
+"turkish.txt": "azerbaijani.txt"
+"swedish.txt": "danish.txt"
+"spanish.txt": "portuguese.txt"
+"romanian.txt": "esperanto.txt"
+"portuguese.txt": "spanish.txt"
+"polish.txt": "esperanto.txt"
+"maori.txt": "filipino.txt"
+"italian.txt": "portuguese.txt"
+"irish.txt": "english.txt"
+"icelandic.txt": "faroese.txt"
+"haitian.txt": "french.txt"
+"german.txt": "dutch.txt"
+"french.txt": "esperanto.txt"
+"filipino.txt": "bikol.txt"
+"faroese.txt": "icelandic.txt"
+"estonian.txt": "esperanto.txt"
+"esperanto.txt": "french.txt"
+"english.txt": "esperanto.txt"
+"dutch.txt": "afrikaans.txt"
+"danish.txt": "swedish.txt"
+"bikol.txt": "filipino.txt"
+"basque.txt": "spanish.txt"
+"azerbaijani.txt": "turkish.txt"
+"afrikaans.txt": "dutch.txt"
 
 Default random points (seed 42):
 [(1.0,9.0),(8.0,3.0),(1.0,10.0),(3.0,9.0),(2.0,2.0),(8.0,1.0),(5.0,3.0),(3.0,3.0),(6.0,9.0),(10.0,3.0)]

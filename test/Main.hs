@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Main (main) where
 
 import KMeans.Algorithm
@@ -11,7 +13,6 @@ import qualified Data.Text.Lazy as T
 import qualified Data.Text.Lazy.IO as TIO
 
 import Data.List
-import Data.Maybe
 import Prelude hiding (unlines)
 
 import System.Directory (listDirectory)
@@ -48,8 +49,8 @@ coordinates =
     , (21.17, 16.91)
     ]
 
-text :: [String] -> [[T.Text]] -> T.Text
-text langNames langs =
+text :: [Named String [T.Text]] -> T.Text
+text namedLangs =
     T.unlines $
         map T.pack $
             [ show $ kMeansStatic 6 3 coordinates
@@ -57,28 +58,28 @@ text langNames langs =
             , show $ silhouetteCoefficient (length coordinates) 6 coordinates
             , show $
                 concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]] :: Cluster [Int])
-            , show $ clustersByName langNames langs $ kMeansStatic 6 3 langs
+            , show $ kMeansStatic 6 3 namedLangs
             , ""
             , "Closest friends:"
             ]
-                ++ map (testClosestFriend langNames langs) langs
+                ++ map (testClosestFriend namedLangs) namedLangs
                 ++ [ ""
                    , "Default random points (seed 42):"
                    , show $ initCoords 10 42
                    , ""
                    , "Points plotted on a 2D Cartesian plane:"
                    ]
-                ++ zipWith testPlane langNames (plotPoints langs)
+                ++ map testNamed (plotNamedPoints namedLangs)
 
-testClosestFriend :: Point a => [String] -> [a] -> a -> String
-testClosestFriend names ps p =
-    fromJust (getName names ps p)
-        ++ ": "
-        ++ fromJust (getName names ps $ closestFriend ps p)
+testClosestFriend
+    :: (Show n, Eq n, Point a) => [Named n a] -> Named n a -> String
+testClosestFriend ps p =
+    show p ++ ": " ++ show (closestFriend ps p)
 
-testPlane :: String -> (Double, Double) -> String
-testPlane name coord =
-    name ++ ": " ++ show coord
+testNamed :: (Show a, Point a) => Named String a -> String
+testNamed (Named{..}) =
+    name ++ ": " ++ show point
+testNamed virtual = show virtual
 
 showSteps :: [[(Double, Double)]] -> [String]
 showSteps steps =
@@ -93,25 +94,15 @@ showSteps steps =
     , coordNum <- [1 .. 25]
     ]
 
-getName :: Point a => [String] -> [a] -> a -> Maybe String
-getName names ps p =
-    (names !!) <$> elemIndex p ps
-
-clustersByName
-    :: [String] -> [[T.Text]] -> [Cluster [T.Text]] -> [Cluster String]
-clustersByName _ _ [] = []
-clustersByName langNames langs ((Cluster c) : cs) =
-    Cluster (mapMaybe (getName langNames langs) c)
-        : clustersByName langNames langs cs
-
 main :: IO ()
-main =
-    do
-        langNames <- listDirectory langFolder
-        langs <- mapM ((fmap getStrings <$> TIO.readFile) . (langFolder </>)) langNames
-        TIO.writeFile "test/out.txt" $ text langNames langs
-        TIO.putStrLn $ T.unlines $ map T.unwords langs
+main = do
+    langNames <- listDirectory langFolder
+    langs <- mapM ((fmap getStrings <$> TIO.readFile) . (langFolder </>)) langNames
+    let namedLangs = namePoints langNames langs
+    TIO.writeFile "test/out.txt" $ text namedLangs
+    TIO.putStrLn $ T.unlines $ map T.unwords langs
   where
     langFolder = "test/languages"
+
     getStrings :: T.Text -> [T.Text]
     getStrings bs = map T.stripEnd $ T.lines bs
