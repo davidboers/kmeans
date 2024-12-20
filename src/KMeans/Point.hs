@@ -5,7 +5,7 @@
 
 The `Point` class is a type constraint intended to simplify the syntax, specifically to prevent too many '[[a]]'.
 -}
-module KMeans.Point (Point, distance, center, closestFriend) where
+module KMeans.Point (Point, distance, center, closestFriend, Named (..)) where
 
 import Data.Char
 
@@ -100,7 +100,7 @@ data Point a => Named n a
 
 instance (Eq n, Point a) => Point (Named n a) where
     center named = Virtual $ center (map point named)
-    
+
     distance (Named{point = x}) (Named{point = y}) = distance x y
     distance (Named{point = x}) (Virtual y) = distance x y
     distance (Virtual x) (Named{point = y}) = distance x y
