@@ -40,7 +40,11 @@ smacofStep distances coords =
         | i == j = sum [weight i j1 | j1 <- m, i /= j1]
         | otherwise = -(weight i j)
 
-    weight i j = (distances !! i !! j) / (matrixX !! i !! j + 1e-2)
+    weight i j
+        | isNaN w = 0
+        | otherwise = w
+      where
+        w = (distances !! i !! j) / (matrixX !! i !! j + 1e-2)
 
 {- | @'smacof' d triesLeft x@ Creates a set of coordinates on a 2D Cartesian plane
 where the distance between any 2 points is approximately the same as the distance
