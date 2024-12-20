@@ -18,8 +18,8 @@ mapIndex f xs =
 
 indices :: [a] -> [Int]
 indices l =
-    [0..(length l - 1)]
+    [0 .. (length l - 1)]
 
-count :: Eq a => a -> [a] -> Int 
+count :: Eq a => a -> [a] -> Int
 count m =
     length . filter (m ==)

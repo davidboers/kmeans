@@ -6,4 +6,4 @@ Run tests:
 -  cabal run kmeans-clustering-test
 
 Formatting:
--  stylish-haskell -i -r .
+-  fourmolu -i .

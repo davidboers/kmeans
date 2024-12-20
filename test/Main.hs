@@ -1,22 +1,21 @@
 module Main (main) where
 
-import           KMeans.Algorithm
-import           KMeans.Cluster
-import           KMeans.OptimizeK.ElbowMethod
-import           KMeans.OptimizeK.Silhouette
-import           KMeans.Point
-import           KMeans.Scaling
+import KMeans.Algorithm
+import KMeans.Cluster
+import KMeans.OptimizeK.ElbowMethod
+import KMeans.OptimizeK.Silhouette
+import KMeans.Point
+import KMeans.Scaling
 
-import qualified Data.Text.Lazy               as T
-import qualified Data.Text.Lazy.IO            as TIO
+import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy.IO as TIO
 
-import           Data.List
-import           Data.Maybe
-import           Prelude                      hiding (unlines)
+import Data.List
+import Data.Maybe
+import Prelude hiding (unlines)
 
-import           System.Directory             (listDirectory)
-import           System.FilePath              ((</>))
-
+import System.Directory (listDirectory)
+import System.FilePath ((</>))
 
 -- Coords
 
@@ -50,28 +49,32 @@ coordinates =
     ]
 
 text :: [String] -> [[T.Text]] -> T.Text
-text langNames langs = T.unlines $ map T.pack $
-    [ show $ kMeansStatic 6 3 coordinates
-    , show $ elbowMethod coordinates
-    , show $ silhouetteCoefficient (length coordinates) 6 coordinates
-    , show $ concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]] :: Cluster [Int])
-    , show $ clustersByName langNames langs $ kMeansStatic 6 3 langs
-    , ""
-    , "Closest friends:"
-    ] ++
-    map (testClosestFriend langNames langs) langs ++
-    [ ""
-    , "Default random points (seed 42):"
-    , show $ initCoords 10 42
-    , ""
-    , "Points plotted on a 2D Cartesian plane:"
-    ] ++
-    zipWith testPlane langNames (plotPoints langs)
+text langNames langs =
+    T.unlines $
+        map T.pack $
+            [ show $ kMeansStatic 6 3 coordinates
+            , show $ elbowMethod coordinates
+            , show $ silhouetteCoefficient (length coordinates) 6 coordinates
+            , show $
+                concat (Cluster [[1, 3, 5], [2, 6, 4, 1], [3, 7, 4, 2, 6]] :: Cluster [Int])
+            , show $ clustersByName langNames langs $ kMeansStatic 6 3 langs
+            , ""
+            , "Closest friends:"
+            ]
+                ++ map (testClosestFriend langNames langs) langs
+                ++ [ ""
+                   , "Default random points (seed 42):"
+                   , show $ initCoords 10 42
+                   , ""
+                   , "Points plotted on a 2D Cartesian plane:"
+                   ]
+                ++ zipWith testPlane langNames (plotPoints langs)
 
 testClosestFriend :: Point a => [String] -> [a] -> a -> String
 testClosestFriend names ps p =
-    fromJust (getName names ps p                   ) ++ ": " ++
-    fromJust (getName names ps $ closestFriend ps p)
+    fromJust (getName names ps p)
+        ++ ": "
+        ++ fromJust (getName names ps $ closestFriend ps p)
 
 testPlane :: String -> (Double, Double) -> String
 testPlane name coord =
@@ -79,29 +82,36 @@ testPlane name coord =
 
 showSteps :: [[(Double, Double)]] -> [String]
 showSteps steps =
-    [ intercalate "," [show stepNum, show coordNum, show (fst $ steps !! (stepNum-1) !! (coordNum-1)), show (snd $ steps !! (stepNum-1) !! (coordNum-1))]
-    | stepNum <- [1..300]
-    , coordNum <- [1..25]
+    [ intercalate
+        ","
+        [ show stepNum
+        , show coordNum
+        , show (fst $ steps !! (stepNum - 1) !! (coordNum - 1))
+        , show (snd $ steps !! (stepNum - 1) !! (coordNum - 1))
+        ]
+    | stepNum <- [1 .. 300]
+    , coordNum <- [1 .. 25]
     ]
 
 getName :: Point a => [String] -> [a] -> a -> Maybe String
 getName names ps p =
     (names !!) <$> elemIndex p ps
 
-clustersByName :: [String] -> [[T.Text]] -> [Cluster [T.Text]] -> [Cluster String]
-clustersByName _         _     []               = []
-clustersByName langNames langs ((Cluster c):cs) =
+clustersByName
+    :: [String] -> [[T.Text]] -> [Cluster [T.Text]] -> [Cluster String]
+clustersByName _ _ [] = []
+clustersByName langNames langs ((Cluster c) : cs) =
     Cluster (mapMaybe (getName langNames langs) c)
         : clustersByName langNames langs cs
 
 main :: IO ()
 main =
- do langNames <- listDirectory langFolder
-    langs <- mapM ((fmap getStrings <$> TIO.readFile) . (langFolder </>)) langNames
-    TIO.writeFile "test/out.txt" $ text langNames langs
-    TIO.putStrLn $ T.unlines $ map T.unwords langs
+    do
+        langNames <- listDirectory langFolder
+        langs <- mapM ((fmap getStrings <$> TIO.readFile) . (langFolder </>)) langNames
+        TIO.writeFile "test/out.txt" $ text langNames langs
+        TIO.putStrLn $ T.unlines $ map T.unwords langs
   where
     langFolder = "test/languages"
     getStrings :: T.Text -> [T.Text]
     getStrings bs = map T.stripEnd $ T.lines bs
-
