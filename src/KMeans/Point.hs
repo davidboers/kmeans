@@ -79,14 +79,16 @@ instance Point a => Point [a] where
 -- HashMaps
 
 instance (Hashable k, Eq k, Point v) => Point (HM.HashMap k v) where
-    center hms = HM.fromList $ zip keys $ map (\k -> center $ mapMaybe (HM.!? k) hms) keys
+    center hms = 
+        HM.fromList $ zip keys $ map (\k -> center $ mapMaybe (HM.!? k) hms) keys
       where
         keys = nub $ concatMap HM.keys hms
 
     distance x y =
-        sum $
-            HM.elems $
-                HM.intersectionWith distance x y
+        weight * sum distances
+      where
+        distances = HM.elems $ HM.intersectionWith distance x y
+        weight = fromIntegral (max (length x) (length y)) / fromIntegral (length distances)
 
 -- Named Points
 
@@ -96,7 +98,7 @@ data Point a => Named n a
         , point :: a
         }
     | Virtual a
-    deriving (Eq)
+    deriving Eq
 
 instance (Eq n, Point a) => Point (Named n a) where
     center named = Virtual $ center (map point named)
