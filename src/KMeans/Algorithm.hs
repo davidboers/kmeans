@@ -30,7 +30,8 @@ getKMeans triesLeft k points centroids
 kMeans :: Point a => Int -> [a] -> IO [Cluster a]
 kMeans k points =
  do rands <- mapM (const $ randomRIO (0, length points - 1)) [0..k]
-    return $ getKMeans maxIter k points $ initializeCentroids points rands
+    let centroids = initializeCentroids points rands
+    return $ getKMeans maxIter k points centroids
 
 -- | @'kMeansStatic' seed k ps@ creates @k@ clusters from points in list @ps@. The
 -- kMeans function allows users to specify a @seed@ for the randomized centroids.
